@@ -11,6 +11,7 @@ using Owin;
 using WebActivatorEx;
 using ConferenceAPI.Filters;
 using Swashbuckle.Application;
+using ConferenceAPI.Handlers;
 
 [assembly: System.Web.PreApplicationStartMethod(typeof(Startup), "PreStart")]
 [assembly: PostApplicationStartMethod(typeof(Startup), "PostStart")]
@@ -56,6 +57,10 @@ namespace ConferenceAPI
 
             config.EnableSwagger("docs/{apiVersion}", c => c.SingleApiVersion("v1", "Conference API"))
                 .EnableSwaggerUi();
+
+            config.MessageHandlers.Add(new CustomHeaderHandler());
+            config.MessageHandlers.Insert(0, new TimingHandler());
+
 
             config.MapHttpAttributeRoutes();
 

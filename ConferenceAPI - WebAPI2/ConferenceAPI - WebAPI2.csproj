@@ -190,10 +190,14 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\Api\SpeakersController.cs" />
     <Compile Include="Filters\CorsDemoAttribute.cs" />
+    <Compile Include="Filters\ValidationAttribute.cs" />
+    <Compile Include="Handlers\CustomHeaderHandler.cs" />
+    <Compile Include="Handlers\TimingHandler.cs" />
     <Compile Include="Models\DataStore.cs" />
     <Compile Include="Models\OperationResult.cs" />
     <Compile Include="Models\Speakers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Responses\ApiResult.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
