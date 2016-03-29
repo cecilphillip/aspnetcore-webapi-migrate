@@ -5,6 +5,13 @@ VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConferenceAPI - WebAPI2", "ConferenceAPI - WebAPI2\ConferenceAPI - WebAPI2.csproj", "{6892F012-80B1-4130-8048-3F49F7865CDD}"
 EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "ConferenceAPI - AspNetCore", "ConferenceAPI - AspNetCore\ConferenceAPI - AspNetCore.xproj", "{68880F7E-2C65-432C-AD67-9BE279EBEE47}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{45248B6C-FA2C-412D-93C2-AC73A9CF8FD3}"
+	ProjectSection(SolutionItems) = preProject
+		ConferenceAPI - AspNetCore\global.json = ConferenceAPI - AspNetCore\global.json
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +22,10 @@ Global
 		{6892F012-80B1-4130-8048-3F49F7865CDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6892F012-80B1-4130-8048-3F49F7865CDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6892F012-80B1-4130-8048-3F49F7865CDD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{68880F7E-2C65-432C-AD67-9BE279EBEE47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68880F7E-2C65-432C-AD67-9BE279EBEE47}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68880F7E-2C65-432C-AD67-9BE279EBEE47}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68880F7E-2C65-432C-AD67-9BE279EBEE47}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
