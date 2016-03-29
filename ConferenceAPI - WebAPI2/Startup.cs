@@ -5,6 +5,7 @@ using System.Web.Routing;
 using Autofac;
 using Autofac.Integration.WebApi;
 using ConferenceAPI;
+using ConferenceAPI.Models;
 using Microsoft.Owin;
 using Owin;
 using WebActivatorEx;
@@ -32,6 +33,7 @@ namespace ConferenceAPI
         {
             var builder = new ContainerBuilder();
 
+            builder.RegisterType<DataStore>().As<IDataStore>().SingleInstance();
             builder.RegisterApiControllers(Assembly.GetExecutingAssembly());
 
             return builder.Build();
