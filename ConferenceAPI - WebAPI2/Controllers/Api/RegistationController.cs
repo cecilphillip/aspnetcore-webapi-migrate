@@ -15,6 +15,7 @@ namespace ConferenceAPI.Controllers.Api
             _dataStore = dataStore;
         }
 
+        [HttpGet]
         public HttpResponseMessage List()
         {
             var results = _dataStore.GetRegistrants();

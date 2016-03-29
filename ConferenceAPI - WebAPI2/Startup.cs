@@ -9,6 +9,8 @@ using ConferenceAPI.Models;
 using Microsoft.Owin;
 using Owin;
 using WebActivatorEx;
+using ConferenceAPI.Filters;
+using Swashbuckle.Application;
 
 [assembly: System.Web.PreApplicationStartMethod(typeof(Startup), "PreStart")]
 [assembly: PostApplicationStartMethod(typeof(Startup), "PostStart")]
@@ -50,6 +52,11 @@ namespace ConferenceAPI
             // Web API routes and configuration
             var config = new HttpConfiguration();
 
+            config.EnableCors(new CorsDemoAttribute()); // Registers CoreMessageHandler
+
+            config.EnableSwagger("docs/{apiVersion}", c => c.SingleApiVersion("v1", "Conference API"))
+                .EnableSwaggerUi();
+
             config.MapHttpAttributeRoutes();
 
             config.Routes.MapHttpRoute(
@@ -57,6 +64,7 @@ namespace ConferenceAPI
                 routeTemplate: "api/{controller}/{action}");
 
             config.DependencyResolver = new AutofacWebApiDependencyResolver(_container);
+
 
             app.UseAutofacWebApi(config);
             app.UseWebApi(config);
