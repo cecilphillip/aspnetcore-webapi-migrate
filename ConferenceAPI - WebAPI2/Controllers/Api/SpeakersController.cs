@@ -19,7 +19,7 @@ namespace ConferenceAPI.Controllers.Api
         [Route("list")]
         public IHttpActionResult List(int? page = null)
         {
-            var results = page.HasValue ?  _dateStore.GetSpeakers(page.Value): _dateStore.GetSpeakers() ;
+            var results = page.HasValue ? _dateStore.GetSpeakers(page.Value) : _dateStore.GetSpeakers();
             return Ok(results);
         }
 
@@ -38,9 +38,15 @@ namespace ConferenceAPI.Controllers.Api
         [HttpPost]
         [Route("create")]
         public IHttpActionResult Create(Speaker speaker)
-        {           
-            _dateStore.AddSpeaker(speaker);
-            return Created(Request.RequestUri + "/" + speaker.Id, speaker);
+        {
+            if (ModelState.IsValid)
+            {
+                _dateStore.AddSpeaker(speaker);
+
+                return Created(Request.RequestUri + "/" + speaker.Id, speaker);
+            }
+
+            return BadRequest(ModelState);
         }
 
         [HttpDelete]
@@ -54,7 +60,5 @@ namespace ConferenceAPI.Controllers.Api
             }
             return NotFound();
         }
-
-
     }
 }

@@ -45,11 +45,16 @@ namespace ConferenceAPI.Controllers.Api
 
         [ValidateModel]
         [HttpPost("create")]
-        public IActionResult Create(Speaker speaker)
-        {            
-            _dateStore.AddSpeaker(speaker);
-            
-            return Created(Request.GetDisplayUrl() + "/" + speaker.Id, speaker);
+        public IActionResult Create([FromBody]Speaker speaker)
+        {
+            if (ModelState.IsValid)
+            {
+                _dateStore.AddSpeaker(speaker);
+
+                return Created(Request.GetDisplayUrl() + "/" + speaker.Id, speaker);
+            }
+
+            return HttpBadRequest(ModelState);
         }
 
         [HttpDelete("remove/{id:int}")]

@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using System.Web.Http;
+using System.Web.Http.ExceptionHandling;
 using System.Web.Mvc;
 using System.Web.Routing;
 using Autofac;
@@ -61,6 +62,7 @@ namespace ConferenceAPI
             config.MessageHandlers.Add(new CustomHeaderHandler());
             config.MessageHandlers.Insert(0, new PingHandler());
 
+            config.Services.Replace(typeof(IExceptionHandler), new CustomExceptionHandler());
 
             config.MapHttpAttributeRoutes();
 

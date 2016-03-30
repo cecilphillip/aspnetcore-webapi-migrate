@@ -1,11 +1,17 @@
-﻿using ConferenceAPI.Filters;
+﻿using System;
+using ConferenceAPI.Filters;
 using ConferenceAPI.Middleware;
 using ConferenceAPI.Models;
 using Microsoft.AspNet.Builder;
+using Microsoft.AspNet.Diagnostics;
 using Microsoft.AspNet.Hosting;
+using Microsoft.AspNet.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+using Microsoft.AspNet.Http.Features;
 using Swashbuckle.SwaggerGen;
 
 namespace ConferenceAPI
@@ -37,13 +43,17 @@ namespace ConferenceAPI
             });
             services.AddSingleton<ValidateModelAttribute>();
             services.AddSingleton<IDataStore, DataStore>();
-            services.AddMvc();
+
+            services.AddMvc().AddJsonOptions(options =>
+            {              
+                options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+            });
 
             services.AddSwaggerGen();
-
             services.ConfigureSwaggerDocument(options =>
             {
-              
+
                 options.SingleApiVersion(new Info
                 {
                     Version = "v1",
@@ -68,9 +78,29 @@ namespace ConferenceAPI
             }
             else
             {
-                //TODO: do something else with this
-                app.UseExceptionHandler("/Home/Error");
+                app.UseExceptionHandler(errorApp =>
+                {
+                    errorApp.Run(async ctx =>
+                    {
+                     
+                        var errorFeature = ctx.Features.Get<IExceptionHandlerFeature>();
+                        var error = errorFeature.Error; // Do what you want with this error
+
+                        var responseData = new
+                        {
+                            Message = "Sorry, something when wrong. Please try again later",
+                            DateTime = DateTimeOffset.Now
+                        };
+
+                        await ctx.Response.WriteAsync(JsonConvert.SerializeObject(responseData));
+                    });
+                });
             }
+
+            app.Run(context =>
+            {
+                throw new Exception("Fire in the whole!!");
+            });
 
             app.UseIISPlatformHandler();
             app.UseCustomHeader();
