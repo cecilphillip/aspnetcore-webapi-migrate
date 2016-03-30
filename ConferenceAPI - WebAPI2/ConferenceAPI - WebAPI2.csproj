@@ -186,7 +186,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\Api\SpeakersController.cs" />
     <Compile Include="Filters\CorsDemoAttribute.cs" />
-    <Compile Include="Filters\ValidationAttribute.cs" />
+    <Compile Include="Filters\ValidateModelAttribute.cs" />
     <Compile Include="Handlers\CustomHeaderHandler.cs" />
     <Compile Include="Handlers\PingHandler.cs" />
     <Compile Include="Models\DataStore.cs" />

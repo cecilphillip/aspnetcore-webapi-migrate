@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Web.Http;
+using ConferenceAPI.Filters;
 using ConferenceAPI.Models;
 
 namespace ConferenceAPI.Controllers.Api
@@ -34,11 +34,11 @@ namespace ConferenceAPI.Controllers.Api
             return Ok(result);
         }
 
+        [ValidateModel]
         [HttpPost]
         [Route("create")]
         public IHttpActionResult Create(Speaker speaker)
-        {
-            //TODO: Validate
+        {           
             _dateStore.AddSpeaker(speaker);
             return Created(Request.RequestUri + "/" + speaker.Id, speaker);
         }

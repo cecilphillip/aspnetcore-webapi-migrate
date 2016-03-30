@@ -7,6 +7,7 @@ using Microsoft.AspNet.Mvc;
 
 namespace ConferenceAPI.Controllers.Api
 {
+    [Route("api/[controller]")]
     public class RegistationController : ApiController
     {
         private readonly IDataStore _dataStore;

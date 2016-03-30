@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using ConferenceAPI.Filters;
 using ConferenceAPI.Models;
 using Microsoft.AspNet.Http.Extensions;
 using Microsoft.AspNet.Mvc;
@@ -14,17 +15,15 @@ namespace ConferenceAPI.Controllers.Api
         {
             _dateStore = dateStore;
         }
-
-        [HttpGet]
-        [Route("list")]
+        
+        [HttpGet("list")]
         public IActionResult List(int? page = null)
         {
             var results = page.HasValue ? _dateStore.GetSpeakers(page.Value) : _dateStore.GetSpeakers();
             return Ok(results);
         }
-
-        [HttpGet]
-        [Route("{id:int}")]
+       
+        [HttpGet("{id:int}")]
         public IActionResult Retrieve(int id)
         {
             var result = _dateStore.GetSpeakers().SingleOrDefault(s => s.Id == id);
@@ -33,9 +32,8 @@ namespace ConferenceAPI.Controllers.Api
 
             return Ok(result);
         }
-
-        [HttpGet]
-        [Route("{id:int}/sessions")]
+       
+        [HttpGet("{id:int}/sessions")]
         public IActionResult RetrieveSessions(int id)
         {
             var result = _dateStore.GetSpeakers().SingleOrDefault(s => s.Id == id);
@@ -45,10 +43,10 @@ namespace ConferenceAPI.Controllers.Api
             return Ok(result.Sessions);
         }
 
+        [ValidateModel]
         [HttpPost("create")]
         public IActionResult Create(Speaker speaker)
-        {
-            //TODO: Validate
+        {            
             _dateStore.AddSpeaker(speaker);
             
             return Created(Request.GetDisplayUrl() + "/" + speaker.Id, speaker);

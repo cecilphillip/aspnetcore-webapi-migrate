@@ -1,17 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Web;
 using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
 
 namespace ConferenceAPI.Filters
 {
-    public class ValidationAttribute : ActionFilterAttribute
+    public class ValidateModelAttribute : ActionFilterAttribute
     {
-        // Taken from https://github.com/WebApiContrib/WebAPIContrib/blob/master/src/WebApiContrib/Filters/ValidationAttribute.cs
+        // Taken from https://github.com/WebApiContrib/WebAPIContrib/blob/master/src/WebApiContrib/Filters/ValidateModelAttribute.cs
 
         public override void OnActionExecuting(HttpActionContext actionContext)
         {

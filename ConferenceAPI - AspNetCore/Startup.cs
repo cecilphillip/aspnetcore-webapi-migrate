@@ -1,10 +1,12 @@
-﻿using ConferenceAPI.Middleware;
+﻿using ConferenceAPI.Filters;
+using ConferenceAPI.Middleware;
 using ConferenceAPI.Models;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Swashbuckle.SwaggerGen;
 
 namespace ConferenceAPI
 {
@@ -31,11 +33,28 @@ namespace ConferenceAPI
                     builder.AllowAnyHeader()
                            .AllowAnyMethod()
                            .WithOrigins("https://my-cool-site.com");
-                });    
+                });
             });
-
+            services.AddSingleton<ValidateModelAttribute>();
             services.AddSingleton<IDataStore, DataStore>();
             services.AddMvc();
+
+            services.AddSwaggerGen();
+
+            services.ConfigureSwaggerDocument(options =>
+            {
+              
+                options.SingleApiVersion(new Info
+                {
+                    Version = "v1",
+                    Title = "Conference API"
+                });
+            });
+
+            services.ConfigureSwaggerSchema(options =>
+            {
+                options.DescribeAllEnumsAsStrings = true;
+            });
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
@@ -58,6 +77,8 @@ namespace ConferenceAPI
             app.UsePing();
 
             app.UseCors("default_policy");
+            app.UseStaticFiles();
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
@@ -68,6 +89,9 @@ namespace ConferenceAPI
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            app.UseSwaggerGen();
+            app.UseSwaggerUi();
         }
 
         // Entry point for the application.
