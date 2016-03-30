@@ -6,35 +6,45 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace ConferenceAPI___AspNetCore
+namespace ConferenceAPI
 {
     public class Startup
     {
-        public Startup(IHostingEnvironment env)
+        public Startup()
         {
             // Set up configuration sources.
             var builder = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json")
                 .AddEnvironmentVariables();
-       
+
             Configuration = builder.Build();
         }
 
         public IConfigurationRoot Configuration { get; set; }
-        
+
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddPolicy("default_policy", builder =>
+                {
+                    builder.AllowAnyHeader()
+                           .AllowAnyMethod()
+                           .WithOrigins("https://my-cool-site.com");
+                });    
+            });
+
             services.AddSingleton<IDataStore, DataStore>();
             services.AddMvc();
         }
-                
+
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
-            
+
             if (env.IsDevelopment())
-            {            
+            {
                 app.UseDeveloperExceptionPage();
             }
             else
@@ -45,10 +55,15 @@ namespace ConferenceAPI___AspNetCore
 
             app.UseIISPlatformHandler();
             app.UseCustomHeader();
-            app.UseTimer();
+            app.UsePing();
 
+            app.UseCors("default_policy");
             app.UseMvc(routes =>
             {
+                routes.MapRoute(
+                    name: "apiRoute",
+                    template: "api/{controller}/{action}");
+
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");

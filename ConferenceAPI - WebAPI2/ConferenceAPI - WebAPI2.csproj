@@ -178,10 +178,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadata Include="Service References\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
@@ -192,7 +188,7 @@
     <Compile Include="Filters\CorsDemoAttribute.cs" />
     <Compile Include="Filters\ValidationAttribute.cs" />
     <Compile Include="Handlers\CustomHeaderHandler.cs" />
-    <Compile Include="Handlers\TimingHandler.cs" />
+    <Compile Include="Handlers\PingHandler.cs" />
     <Compile Include="Models\DataStore.cs" />
     <Compile Include="Models\OperationResult.cs" />
     <Compile Include="Models\Speakers.cs" />
@@ -209,7 +205,6 @@
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
-    <Content Include="Scripts\_references.js" />
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />

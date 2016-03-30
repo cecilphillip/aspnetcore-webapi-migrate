@@ -16,7 +16,7 @@ namespace ConferenceAPI.Filters
 
             var policy = new CorsPolicy() {
                 AllowAnyHeader = true,
-                AllowAnyMethod = true,
+                AllowAnyMethod = true                
             };
 
             policy.Origins.Add("https://my-cool-site.com");            

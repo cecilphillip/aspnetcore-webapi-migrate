@@ -59,7 +59,7 @@ namespace ConferenceAPI
                 .EnableSwaggerUi();
 
             config.MessageHandlers.Add(new CustomHeaderHandler());
-            config.MessageHandlers.Insert(0, new TimingHandler());
+            config.MessageHandlers.Insert(0, new PingHandler());
 
 
             config.MapHttpAttributeRoutes();

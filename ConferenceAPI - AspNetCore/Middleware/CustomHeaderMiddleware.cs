@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Http;
 
@@ -17,16 +14,19 @@ namespace ConferenceAPI.Middleware
             _next = next;
         }
 
-        public Task Invoke(HttpContext httpContext)
+        public async Task Invoke(HttpContext context)
         {
-            //TODO:
-            return _next(httpContext).ContinueWith((task)=> {
-                httpContext.Response.Headers.Add("conference-header", "This is my custom header.");                
+            context.Response.OnStarting(() =>
+            {
+                context.Response.Headers.Add("Conference-Header", "This is my custom header.");
+                return Task.CompletedTask;
             });
+            
+            await _next(context);            
         }
     }
 
- 
+
     public static class CustomHeaderMiddlewareExtensions
     {
         public static IApplicationBuilder UseCustomHeader(this IApplicationBuilder builder)

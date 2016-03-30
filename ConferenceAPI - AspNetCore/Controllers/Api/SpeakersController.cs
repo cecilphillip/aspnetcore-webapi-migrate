@@ -1,12 +1,12 @@
 ﻿using System.Linq;
-using System.Web.Http;
 using ConferenceAPI.Models;
+using Microsoft.AspNet.Http.Extensions;
 using Microsoft.AspNet.Mvc;
 
 namespace ConferenceAPI.Controllers.Api
 {
     [Route("api/[controller]")]
-    public class SpeakersController : ApiController
+    public class SpeakersController : Controller
     {
         private readonly IDataStore _dateStore;
 
@@ -29,9 +29,20 @@ namespace ConferenceAPI.Controllers.Api
         {
             var result = _dateStore.GetSpeakers().SingleOrDefault(s => s.Id == id);
 
-            if (result == null) return NotFound();
+            if (result == null) return HttpNotFound();
 
             return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("{id:int}/sessions")]
+        public IActionResult RetrieveSessions(int id)
+        {
+            var result = _dateStore.GetSpeakers().SingleOrDefault(s => s.Id == id);
+
+            if (result == null) return HttpNotFound();
+
+            return Ok(result.Sessions);
         }
 
         [HttpPost("create")]
@@ -39,7 +50,8 @@ namespace ConferenceAPI.Controllers.Api
         {
             //TODO: Validate
             _dateStore.AddSpeaker(speaker);
-            return Created(Request.RequestUri + "/" + speaker.Id, speaker);
+            
+            return Created(Request.GetDisplayUrl() + "/" + speaker.Id, speaker);
         }
 
         [HttpDelete("remove/{id:int}")]
@@ -50,7 +62,7 @@ namespace ConferenceAPI.Controllers.Api
             {
                 return Ok(result.Data);
             }
-            return NotFound();
+            return HttpNotFound();
         }
     }
 }
