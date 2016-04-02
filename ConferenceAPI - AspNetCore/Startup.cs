@@ -60,7 +60,6 @@ namespace ConferenceAPI
                     Title = "Conference API"
                 });
             });
-
             services.ConfigureSwaggerSchema(options =>
             {
                 options.DescribeAllEnumsAsStrings = true;
@@ -81,8 +80,7 @@ namespace ConferenceAPI
                 app.UseExceptionHandler(errorApp =>
                 {
                     errorApp.Run(async ctx =>
-                    {
-                     
+                    {                     
                         var errorFeature = ctx.Features.Get<IExceptionHandlerFeature>();
                         var error = errorFeature.Error; // Do what you want with this error
 
@@ -95,14 +93,11 @@ namespace ConferenceAPI
                         await ctx.Response.WriteAsync(JsonConvert.SerializeObject(responseData));
                     });
                 });
-            }
-
-            app.Run(context =>
-            {
-                throw new Exception("Fire in the whole!!");
-            });
+            }          
 
             app.UseIISPlatformHandler();
+            
+            // Custom Middleware
             app.UseCustomHeader();
             app.UsePing();
 

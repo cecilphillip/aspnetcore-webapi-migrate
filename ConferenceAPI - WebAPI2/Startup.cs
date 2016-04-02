@@ -72,7 +72,6 @@ namespace ConferenceAPI
 
             config.DependencyResolver = new AutofacWebApiDependencyResolver(_container);
 
-
             app.UseAutofacWebApi(config);
             app.UseWebApi(config);
         }

@@ -8,13 +8,13 @@ namespace ConferenceAPI.Handlers
     {
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            return base.SendAsync(request, cancellationToken).ContinueWith((task) =>
+            return base.SendAsync(request, cancellationToken).ContinueWith(task =>
             {
                 // Here you can inspect/manipulate the outgoing response.
                 var response = task.Result;
                 response.Headers.Add("conference-header", "This is my custom header.");
                 return response;
-            });
+            }, cancellationToken);
         }
     }
 }

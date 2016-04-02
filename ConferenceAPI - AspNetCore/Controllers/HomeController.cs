@@ -4,9 +4,6 @@ namespace ConferenceAPI.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index()
-        {
-            return Content("Hi Guys");
-        }
+        public IActionResult Index() => Content("Hi Guys");
     }
 }
