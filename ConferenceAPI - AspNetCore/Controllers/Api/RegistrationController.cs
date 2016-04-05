@@ -8,11 +8,11 @@ using Microsoft.AspNet.Mvc;
 namespace ConferenceAPI.Controllers.Api
 {
     [Route("api/[controller]")]
-    public class RegistationController : ApiController
+    public class RegistrationController : ApiController
     {
         private readonly IDataStore _dataStore;
 
-        public RegistationController(IDataStore dataStore)
+        public RegistrationController(IDataStore dataStore)
         {
             _dataStore = dataStore;
         }

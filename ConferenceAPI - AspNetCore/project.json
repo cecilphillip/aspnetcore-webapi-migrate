@@ -21,7 +21,7 @@
     "Bogus": "5.0.1",
     "Ix-Main": "1.2.5",
     "Swashbuckle.SwaggerGen": "6.0.0-rc1-final",
-    "Swashbuckle.SwaggerUi": "6.0.0-rc1-final"
+    "Swashbuckle.SwaggerUi": "6.0.0-rc1-final"   
   },
 
   "commands": {
@@ -29,7 +29,8 @@
   },
 
   "frameworks": {
-    "dnx46": { }
+    "dnx46": { },
+    "dnxcore50": { }
   },
 
   "exclude": [

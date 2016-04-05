@@ -45,11 +45,11 @@ namespace ConferenceAPI
             services.AddSingleton<IDataStore, DataStore>();
 
             services.AddMvc().AddJsonOptions(options =>
-            {              
+            {
                 options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
                 options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
-            });
-
+            }).AddWebApiConventions();
+          
             services.AddSwaggerGen();
             services.ConfigureSwaggerDocument(options =>
             {

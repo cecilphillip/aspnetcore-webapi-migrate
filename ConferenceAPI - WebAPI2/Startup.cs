@@ -24,6 +24,7 @@ namespace ConferenceAPI
     public class Startup
     {
         private static IContainer _container;
+
         public static void PreStart()
         {
             _container = BuildContainer();
@@ -54,7 +55,7 @@ namespace ConferenceAPI
             // Web API routes and configuration
             var config = new HttpConfiguration();
 
-            config.EnableCors(new CorsDemoAttribute()); // Registers CoreMessageHandler
+            config.EnableCors(new CorsDemoAttribute()); // Register CorsMessageHandler
 
             config.EnableSwagger("docs/{apiVersion}", c => c.SingleApiVersion("v1", "Conference API"))
                 .EnableSwaggerUi();
@@ -62,7 +63,7 @@ namespace ConferenceAPI
             config.MessageHandlers.Add(new CustomHeaderHandler());
             config.MessageHandlers.Insert(0, new PingHandler());
 
-            config.Services.Replace(typeof(IExceptionHandler), new CustomExceptionHandler());
+            config.Services.Replace(typeof (IExceptionHandler), new CustomExceptionHandler());
 
             config.MapHttpAttributeRoutes();
 
@@ -80,6 +81,11 @@ namespace ConferenceAPI
         {
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
+        }
+
+        public static void Stop()
+        {
+            // Do some clean up here for your app....
         }
     }
 }
