@@ -1,27 +1,28 @@
 ﻿using System;
+using System.IO;
 using ConferenceAPI.Filters;
 using ConferenceAPI.Middleware;
 using ConferenceAPI.Models;
-using Microsoft.AspNet.Builder;
-using Microsoft.AspNet.Diagnostics;
-using Microsoft.AspNet.Hosting;
-using Microsoft.AspNet.Http;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using Microsoft.AspNet.Http.Features;
-using Swashbuckle.SwaggerGen;
+using Swashbuckle.SwaggerGen.Generator;
 
 namespace ConferenceAPI
 {
     public class Startup
     {
-        public Startup()
+        public Startup(IHostingEnvironment env)
         {
             // Set up configuration sources.
             var builder = new ConfigurationBuilder()
+                .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json")
                 .AddEnvironmentVariables();
 
@@ -49,21 +50,16 @@ namespace ConferenceAPI
                 options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
                 options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
             }).AddWebApiConventions();
-          
-            services.AddSwaggerGen();
-            services.ConfigureSwaggerDocument(options =>
-            {
 
-                options.SingleApiVersion(new Info
+            services.AddSwaggerGen(opts =>
+            {
+                opts.SingleApiVersion(new Info
                 {
                     Version = "v1",
                     Title = "Conference API"
                 });
-            });
-            services.ConfigureSwaggerSchema(options =>
-            {
-                options.DescribeAllEnumsAsStrings = true;
-            });
+                opts.DescribeAllEnumsAsStrings();
+            });                    
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
@@ -80,7 +76,7 @@ namespace ConferenceAPI
                 app.UseExceptionHandler(errorApp =>
                 {
                     errorApp.Run(async ctx =>
-                    {                     
+                    {
                         var errorFeature = ctx.Features.Get<IExceptionHandlerFeature>();
                         var error = errorFeature.Error; // Do what you want with this error
 
@@ -93,10 +89,8 @@ namespace ConferenceAPI
                         await ctx.Response.WriteAsync(JsonConvert.SerializeObject(responseData));
                     });
                 });
-            }          
+            }
 
-            app.UseIISPlatformHandler();
-            
             // Custom Middleware
             app.UseCustomHeader();
             app.UsePing();
@@ -106,13 +100,13 @@ namespace ConferenceAPI
 
             app.UseMvc(routes =>
             {
-                routes.MapRoute(
+                routes.MapWebApiRoute(
                     name: "apiRoute",
                     template: "api/{controller}/{action}");
 
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller=Home}/{action=Index}");
             });
 
             app.UseSwaggerGen();
@@ -120,6 +114,16 @@ namespace ConferenceAPI
         }
 
         // Entry point for the application.
-        public static void Main(string[] args) => WebApplication.Run<Startup>(args);
+        public static void Main(string[] args)
+        {
+            var host = new WebHostBuilder()
+                .UseKestrel()
+                .UseContentRoot(Directory.GetCurrentDirectory())
+                .UseIISIntegration()
+                .UseStartup<Startup>()
+                .Build();
+
+            host.Run();
+        }
     }
 }
