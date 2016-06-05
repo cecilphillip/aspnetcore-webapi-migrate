@@ -3,11 +3,10 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using ConferenceAPI.Models;
-using Microsoft.AspNet.Mvc;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ConferenceAPI.Controllers.Api
-{
-    [Route("api/[controller]")]
+{   
     public class RegistrationController : ApiController
     {
         private readonly IDataStore _dataStore;

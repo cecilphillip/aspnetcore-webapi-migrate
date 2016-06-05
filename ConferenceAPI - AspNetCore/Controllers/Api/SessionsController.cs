@@ -1,11 +1,11 @@
 using System.Collections.Generic;
-using Microsoft.AspNet.Mvc;
 using ConferenceAPI.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ConferenceAPI.Controllers.Api
 {
     [Route("api/[controller]")]
-    public class SessionsController 
+    public class SessionsController
     {
         private readonly IDataStore _dataStore;
 
@@ -14,10 +14,7 @@ namespace ConferenceAPI.Controllers.Api
             _dataStore = dataStore;
         }
 
-        [HttpGet("")]        
-        public IEnumerable<Session> GetSessions()
-        {
-            return _dataStore.GetSessions();
-        }
+        [HttpGet("")]
+        public IEnumerable<Session> GetSessions() => _dataStore.GetSessions();
     }
 }

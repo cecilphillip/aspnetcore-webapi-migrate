@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
-using Microsoft.AspNet.Builder;
-using Microsoft.AspNet.Http;
 using System.Net;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
 namespace ConferenceAPI.Middleware
@@ -26,7 +26,7 @@ namespace ConferenceAPI.Middleware
             if (headers.ContainsKey(PingMe))
             {
                 var value = headers[PingMe];
-                _logger.LogVerbose($"Pinging {value}");
+                _logger.LogDebug($"Pinging {value}");
 
                 context.Response.Headers[PingBack] = $"Hi {value}";
                 context.Response.StatusCode = (int)HttpStatusCode.Accepted;

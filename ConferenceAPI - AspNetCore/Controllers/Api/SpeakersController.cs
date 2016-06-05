@@ -1,8 +1,8 @@
 ﻿using System.Linq;
 using ConferenceAPI.Filters;
 using ConferenceAPI.Models;
-using Microsoft.AspNet.Http.Extensions;
-using Microsoft.AspNet.Mvc;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http.Extensions;
 
 namespace ConferenceAPI.Controllers.Api
 {
@@ -28,8 +28,7 @@ namespace ConferenceAPI.Controllers.Api
         {
             var result = _dateStore.GetSpeakers().SingleOrDefault(s => s.Id == id);
 
-            if (result == null) return HttpNotFound();
-
+            if (result == null) return NotFound();            
             return Ok(result);
         }
        
@@ -38,7 +37,7 @@ namespace ConferenceAPI.Controllers.Api
         {
             var result = _dateStore.GetSpeakers().SingleOrDefault(s => s.Id == id);
 
-            if (result == null) return HttpNotFound();
+            if (result == null) return NotFound();
 
             return Ok(result.Sessions);
         }
@@ -54,7 +53,7 @@ namespace ConferenceAPI.Controllers.Api
                 return Created(Request.GetDisplayUrl() + "/" + speaker.Id, speaker);
             }
 
-            return HttpBadRequest(ModelState);
+            return BadRequest(ModelState);
         }
 
         [HttpDelete("remove/{id:int}")]
@@ -65,7 +64,7 @@ namespace ConferenceAPI.Controllers.Api
             {
                 return Ok(result.Data);
             }
-            return HttpNotFound();
+            return NotFound();
         }
     }
 }
